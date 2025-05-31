@@ -18,7 +18,7 @@ function StoryManagement() {
   };
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/stories')
+    fetch('https://storykuu-production.up.railway.app/api/stories')
       .then(res => res.json())
       .then(data => {
         setStories(data);
@@ -45,7 +45,7 @@ function StoryManagement() {
     if (!window.confirm("Are you sure you want to delete this story?")) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/stories/${id}`, {
+      const res = await fetch(`https://storykuu-production.up.railway.app/api/stories/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {

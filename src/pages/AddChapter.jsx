@@ -20,7 +20,7 @@ function AddChapter() {
         if (isEditMode) {
             const fetchChapter = async () => {
                 try {
-                    const res = await fetch(`http://localhost:5000/api/chapters/${chapterId}`);
+                    const res = await fetch(`https://storykuu-production.up.railway.app/api/chapters/${chapterId}`);
                     const data = await res.json();
                     setTitle(data.title || '');
                     setStory(data.story || '');
@@ -47,8 +47,8 @@ function AddChapter() {
         setIsLoading(true);
         try {
             const endpoint = isEditMode
-                ? `http://localhost:5000/api/chapters/${chapterId}`
-                : "http://localhost:5000/api/chapters";
+                ? `https://storykuu-production.up.railway.app/api/chapters/${chapterId}`
+                : "https://storykuu-production.up.railway.app/api/chapters";
 
             const method = isEditMode ? "PUT" : "POST";
 

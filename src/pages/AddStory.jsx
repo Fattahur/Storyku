@@ -37,7 +37,7 @@ const handleDeleteChapter = async (chapterId) => {
     if (!confirmDelete) return;
 
     try {
-        const res = await fetch(`http://localhost:5000/api/chapters/${chapterId}`, {
+        const res = await fetch(`https://storykuu-production.up.railway.app/api/chapters/${chapterId}`, {
             method: 'DELETE',
         });
 
@@ -58,7 +58,7 @@ const handleDeleteChapter = async (chapterId) => {
     useEffect(() => {
         const fetchChapters = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/chapters');
+                const res = await fetch('https://storykuu-production.up.railway.app/api/chapters');
                 if (!res.ok) throw new Error('Failed to fetch chapters');
                 const data = await res.json();
                 setChapters(data);
@@ -123,7 +123,7 @@ const handleDeleteChapter = async (chapterId) => {
         };
 
         try {
-            const response = await fetch('http://localhost:5000/api/stories', {
+            const response = await fetch('https://storykuu-production.up.railway.app/api/stories', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
