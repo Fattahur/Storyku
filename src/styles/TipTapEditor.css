@@ -1,0 +1,9 @@
+.tiptap {
+  min-height: 200px;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #fff;
+  line-height: 1.5;
+  font-size: 16px;
+}
