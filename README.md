@@ -1,12 +1,50 @@
-# React + Vite
+Storyku
+<a name="introduction"></a> Introduction :
+Storyku adalah aplikasi web berbasis React yang memungkinkan pengguna untuk berbagi cerita, melihat daftar cerita, dan mengelola cerita mereka. Proyek ini dibangun menggunakan Vite sebagai bundler dan menggunakan berbagai pustaka modern untuk pengembangan frontend.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Table of Contents
+Introduction
 
-Currently, two official plugins are available:
+Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Libraries
 
-## Expanding the ESLint configuration
+Project Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Website URL
+
+<a name="features"></a> Features :
+Melihat daftar cerita
+
+Menambahkan cerita baru
+
+Melihat detail cerita
+
+Mengedit cerita
+
+<a name="libraries"></a> Libraries :
+ReactJS
+
+Vite
+
+ESLint
+
+Vercel (untuk deployment)
+
+<a name="project-structure"></a> Project Structure :
+public - Berisi aset publik seperti gambar dan ikon
+
+src - Berisi kode sumber utama aplikasi
+
+components - Komponen React yang digunakan di berbagai bagian aplikasi
+
+pages - Halaman-halaman utama aplikasi
+
+utils - Fungsi utilitas yang digunakan di seluruh aplikasi
+
+services - Fungsi untuk berinteraksi dengan backend atau API
+
+backend - (Jika tersedia) Berisi kode sumber untuk backend aplikasi
+
+<a name="website-url"></a> Website URL :
+Aplikasi ini dapat diakses melalui URL berikut: https://storyku-drab.vercel.app
