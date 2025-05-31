@@ -1,4 +1,4 @@
-import './app.css';
+import './App.css';
 import StoryManagement from './pages/StoryManagement';
 import { Routes, Route } from 'react-router-dom';
 import AddStory from './pages/AddStory';
