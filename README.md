@@ -47,4 +47,4 @@ services - Fungsi untuk berinteraksi dengan backend atau API
 backend - (Jika tersedia) Berisi kode sumber untuk backend aplikasi
 
 <a name="website-url"></a> Website URL :
-Aplikasi ini dapat diakses melalui URL berikut: https://storyku-drab.vercel.app
+Aplikasi ini dapat diakses melalui URL berikut: [https://storyku-drab.vercel.app](https://storyku-9ou3yd88y-fattahurs-projects.vercel.app/)
