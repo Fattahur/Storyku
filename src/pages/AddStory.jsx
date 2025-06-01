@@ -82,7 +82,7 @@ function AddStory() {
     useEffect(() => {
         const fetchChapters = async () => {
             try {
-                const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/chapters');
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chapters`);
                 if (!res.ok) throw new Error('Failed to fetch chapters');
                 const data = await res.json();
                 setChapters(data);
@@ -191,7 +191,7 @@ function AddStory() {
             } else {
                 // Add mode: POST request
                 storyData.createdAt = new Date().toISOString();
-                response = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/stories', {
+                response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

@@ -52,7 +52,7 @@ function EditStory() {
     useEffect(() => {
         const fetchChapters = async () => {
             try {
-                const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/chapters');
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chapters`);
                 if (!res.ok) throw new Error('Failed to fetch chapters');
                 const data = await res.json();
                 setChapters(data);

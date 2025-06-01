@@ -18,7 +18,7 @@ function StoryManagement() {
   };
 
   useEffect(() => {
-    fetch('${process.env.NEXT_PUBLIC_API_URL}/api/stories')
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories`)
       .then(res => res.json())
       .then(data => {
         setStories(data);
