@@ -139,7 +139,7 @@ function StoryManagement() {
                       <td>
                         <button
                           className="edit-btn"
-                          onClick={() => navigate(`/stories/edit/${story.id}`)}
+                          onClick={() => navigate(`${process.env.NEXT_PUBLIC_API_URL}/stories/edit/${story.id}`)}
                           aria-label={`Edit story ${story.title}`}
                         >
                           Edit
