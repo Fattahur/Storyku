@@ -3,58 +3,72 @@ import '../styles/AddStory.css';
 import Sidebar from "../components/Sidebar";
 import React, { useState, useEffect } from 'react';
 
-function AddStory() {
-    const { id } = useParams(); // ambil id dari url, jika ada berarti edit
+function EditStory() {
+    const { storyId } = useParams();
+    const navigate = useNavigate();
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const toggleSidebar = () => setSidebarOpen(prev => !prev);
-    const navigate = useNavigate();
-    const [chapters, setChapters] = useState([]);
 
-    // Form state
+    const [chapters, setChapters] = useState([]);
     const [title, setTitle] = useState('');
     const [writerName, setWriterName] = useState('');
     const [synopsis, setSynopsis] = useState('');
     const [status, setStatus] = useState('Draft');
-    const [tags, setTags] = useState(["Best", "Mental Illness", "Short"]);
+    const [tags, setTags] = useState([]);
     const [selectedkeyword, setSelectedkeyword] = useState('');
     const [coverImageError, setCoverImageError] = useState('');
     const [coverImageName, setCoverImageName] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [activeMenuIndex, setActiveMenuIndex] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const [fetchingStory, setFetchingStory] = useState(false);
-    const { storyId } = useParams();
 
     useEffect(() => {
-        if (storyId) {
-            const fetchStory = async () => {
-                try {
-                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories/${storyId}`);
-                    if (!res.ok) throw new Error("Failed to fetch story data");
-                    const data = await res.json();
-                    setTitle(data.title || '');
-                    setWriterName(data.writer || '');
-                    setSynopsis(data.synopsis || '');
-                    setStatus(data.status || 'Draft');
-                    setSelectedCategory(data.category || '');
-                    setTags(data.keyword || []);
-                    setCoverImageName(data.coverImageName || '');
-                } catch (err) {
-                    console.error("Error fetching story:", err);
-                }
-            };
-            fetchStory();
-        }
+        if (!storyId) return;
+        const fetchStory = async () => {
+            setFetchingStory(true);
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories/${storyId}`);
+                if (!res.ok) throw new Error('Story not found');
+                const data = await res.json();
+                setTitle(data.title || '');
+                setWriterName(data.writer || '');
+                setSynopsis(data.synopsis || '');
+                setStatus(data.status || 'Draft');
+                setSelectedCategory(data.category || '');
+                setTags(data.keyword || []);
+                setCoverImageName(data.coverImageName || '');
+            } catch (err) {
+                console.error('Failed to fetch story:', err);
+                setError('Failed to load story data');
+            } finally {
+                setFetchingStory(false);
+            }
+        };
+        fetchStory();
     }, [storyId]);
 
-    // Toggle dropdown menu
+    useEffect(() => {
+        const fetchChapters = async () => {
+            try {
+                const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/chapters');
+                if (!res.ok) throw new Error('Failed to fetch chapters');
+                const data = await res.json();
+                setChapters(data);
+            } catch (err) {
+                console.error('Failed to fetch chapters:', err);
+            }
+        };
+        fetchChapters();
+    }, []);
+
     const toggleMenu = (index) => {
         setActiveMenuIndex(activeMenuIndex === index ? null : index);
     };
 
-    const handleEditChapter = (chapterId) => {
-        navigate(`/chapters/edit/${chapterId}`);
+    const handleEditChapter = (index) => {
+        navigate(`/edit-chapter/${index}`);  // gunakan index karena data chapter tidak punya id
     };
 
     const handleDeleteChapter = async (chapterId) => {
@@ -74,56 +88,6 @@ function AddStory() {
         }
     };
 
-    const handleCategoryChange = (e) => {
-        setSelectedCategory(e.target.value);
-    };
-
-    // Fetch chapters on mount
-    useEffect(() => {
-        const fetchChapters = async () => {
-            try {
-                const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/chapters');
-                if (!res.ok) throw new Error('Failed to fetch chapters');
-                const data = await res.json();
-                setChapters(data);
-            } catch (err) {
-                console.error('Failed to fetch chapters:', err);
-            }
-        };
-
-        fetchChapters();
-    }, []);
-
-    // Fetch story data jika id ada (edit mode)
-    useEffect(() => {
-        if (!id) return;
-
-        const fetchStory = async () => {
-            setFetchingStory(true);
-            try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories/${id}`);
-                if (!res.ok) throw new Error('Story not found');
-                const data = await res.json();
-
-                // Isi form dengan data story yang di-fetch
-                setTitle(data.title || '');
-                setWriterName(data.writer || '');
-                setSynopsis(data.synopsis || '');
-                setStatus(data.status || 'Draft');
-                setSelectedCategory(data.category || '');
-                setTags(data.keyword || []);
-                setCoverImageName(data.coverImageName || '');
-            } catch (err) {
-                console.error('Failed to fetch story:', err);
-                setError('Failed to load story data');
-            } finally {
-                setFetchingStory(false);
-            }
-        };
-
-        fetchStory();
-    }, [id]);
-
     const handleCoverImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -138,6 +102,10 @@ function AddStory() {
         }
     };
 
+    const handleCategoryChange = (e) => {
+        setSelectedCategory(e.target.value);
+    };
+
     const addTag = (tag) => {
         if (tag && !tags.includes(tag)) {
             setTags([...tags, tag]);
@@ -150,21 +118,21 @@ function AddStory() {
 
     const handlekeywordChange = (e) => {
         const selected = e.target.value;
-        setSelectedkeyword('');
-        if (selected) addTag(selected);
+        setSelectedkeyword(selected);
+        if (selected) {
+            addTag(selected);
+            setSelectedkeyword('');
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!title.trim()) {
             alert("Title is required");
             return;
         }
-
         setLoading(true);
         setError('');
-
         const storyData = {
             title,
             writer: writerName,
@@ -177,34 +145,19 @@ function AddStory() {
         };
 
         try {
-            let response;
-
-            if (id) {
-                // Edit mode: PUT request
-                response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories/${id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(storyData)
-                });
-            } else {
-                // Add mode: POST request
-                storyData.createdAt = new Date().toISOString();
-                response = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/stories', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(storyData)
-                });
-            }
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories/${storyId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(storyData)
+            });
 
             if (response.ok) {
                 navigate('/');
             } else {
                 const data = await response.json();
-                setError(data.message || 'Failed to save story');
+                setError(data.message || 'Failed to update story');
             }
         } catch (err) {
             setError('Error connecting to server');
@@ -215,11 +168,7 @@ function AddStory() {
     };
 
     if (fetchingStory) {
-        return (
-            <div style={{ padding: '2rem' }}>
-                <p>Loading story data...</p>
-            </div>
-        );
+        return <div style={{ padding: '2rem' }}>Loading story data...</div>;
     }
 
     return (
@@ -231,17 +180,12 @@ function AddStory() {
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                         <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                    <a href="#" className="text-teal-400 hover:underline">{id ? "Edit Stories" : "Add Stories"}</a>
+                    <span className="text-teal-400">Edit Story</span>
                 </div>
 
-                <h1 className="title">{id ? "Edit Stories" : "Add Stories"}</h1>
+                <h1 className="title">Edit Story</h1>
 
-                <button
-                    type="button"
-                    className="back-button"
-                    onClick={() => navigate('/')}
-                    aria-label="Back to Stories Management"
-                >
+                <button type="button" className="back-button" onClick={() => navigate('/')}>
                     <span className="flex items-center gap-2">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                             <path d="M15 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round" />
@@ -250,53 +194,26 @@ function AddStory() {
                     </span>
                 </button>
 
-                <form className="story-form" autoComplete="off" noValidate onSubmit={handleSubmit}>
+                <form className="story-form" onSubmit={handleSubmit} noValidate autoComplete="off">
                     <div className="form-row">
                         <div className="form-group">
                             <label htmlFor="title">Title</label>
-                            <input
-                                id="title"
-                                name="title"
-                                type="text"
-                                placeholder="Title"
-                                value={title}
-                                onChange={e => setTitle(e.target.value)}
-                                required
-                            />
+                            <input id="title" value={title} onChange={e => setTitle(e.target.value)} required />
                         </div>
                         <div className="form-group">
                             <label htmlFor="writerName">Writer Name</label>
-                            <input
-                                id="writerName"
-                                name="writerName"
-                                type="text"
-                                placeholder="Writer Name"
-                                value={writerName}
-                                onChange={e => setWriterName(e.target.value)}
-                            />
+                            <input id="writerName" value={writerName} onChange={e => setWriterName(e.target.value)} />
                         </div>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="synopsis">Synopsis</label>
-                        <textarea
-                            id="synopsis"
-                            name="synopsis"
-                            rows="4"
-                            placeholder="Synopsis"
-                            value={synopsis}
-                            onChange={e => setSynopsis(e.target.value)}
-                        />
+                        <textarea id="synopsis" rows="4" value={synopsis} onChange={e => setSynopsis(e.target.value)} />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="category">Category</label>
-                        <select
-                            id="category"
-                            name="category"
-                            value={selectedCategory}
-                            onChange={handleCategoryChange}
-                        >
+                        <select id="category" value={selectedCategory} onChange={handleCategoryChange}>
                             <option value="">Pilih Kategori</option>
                             <option value="Fiksi">Fiksi</option>
                             <option value="Non-Fiksi">Non-Fiksi</option>
@@ -305,13 +222,8 @@ function AddStory() {
 
                     <div className="form-row">
                         <div className="form-group">
-                            <label htmlFor="keyword">Choose tags/keywords</label>
-                            <select
-                                id="keyword"
-                                name="keyword"
-                                value={selectedkeyword}
-                                onChange={handlekeywordChange}
-                            >
+                            <label htmlFor="keyword">Choose tags</label>
+                            <select id="keyword" value={selectedkeyword} onChange={handlekeywordChange}>
                                 <option value="">Keywords</option>
                                 <option value="Best">Best</option>
                                 <option value="Mental Illness">Mental Illness</option>
@@ -323,8 +235,8 @@ function AddStory() {
                             </select>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="tags">Tags/Keywords Story</label>
-                            <div id="tags" className="tag-container">
+                            <label>Tags</label>
+                            <div className="tag-container">
                                 {tags.map((tag, index) => (
                                     <span className="tag" key={index}>
                                         {tag}
@@ -335,37 +247,32 @@ function AddStory() {
                         </div>
                     </div>
 
-                    <div className="form-row items-center">
-                        <div className="form-group relative">
+                    <div className="form-row">
+                        <div className="form-group">
                             <label htmlFor="coverImage">Cover Image</label>
                             <input
                                 id="coverImage"
-                                name="coverImage"
                                 type="file"
                                 accept="image/png, image/jpeg"
                                 onChange={handleCoverImageChange}
                             />
-                            {coverImageName && <div className="text-xs text-gray-500 mt-1">{coverImageName}</div>}
-                            {coverImageError && <div className="text-xs text-red-500 mt-1">{coverImageError}</div>}
+                            {coverImageName && <div className="text-xs text-gray-500">{coverImageName}</div>}
+                            {coverImageError && <div className="text-xs text-red-500">{coverImageError}</div>}
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="status">Status</label>
-                            <select
-                                id="status"
-                                name="status"
-                                value={status}
-                                onChange={e => setStatus(e.target.value)}
-                            >
+                            <select id="status" value={status} onChange={e => setStatus(e.target.value)}>
                                 <option value="Publish">Publish</option>
                                 <option value="Draft">Draft</option>
                             </select>
                         </div>
-                        <div className="add-chapter-btn">
-                            <button type="button" onClick={() => navigate('/add-chapter')}>
-                                <i className="fas fa-plus"></i> Add Chapter
-                            </button>
-                        </div>
+                    </div>
+
+                    <div className="add-chapter-btn">
+                        <button type="button" onClick={() => navigate('/add-chapter')}>
+                            <i className="fas fa-plus"></i> Add Chapter
+                        </button>
                     </div>
 
                     <div className="table-container">
@@ -411,16 +318,16 @@ function AddStory() {
 
                     <div className="form-actions">
                         <button type="button" className="cancel-btn" onClick={() => navigate('/')}>Cancel</button>
-                        <button type="submit" className="save-btn" disabled={loading}>
-                            {loading ? 'Saving...' : 'Save'}
+                        <button type="submit" disabled={loading} className="submit-btn">
+                            {loading ? 'Saving...' : 'Update Story'}
                         </button>
                     </div>
 
-                    {error && <div className="error-message">{error}</div>}
+                    {error && <p className="error-message">{error}</p>}
                 </form>
             </main>
         </div>
     );
 }
 
-export default AddStory;
+export default EditStory;

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import '../styles/AddChapter.css';
 import Sidebar from "../components/Sidebar";
 
-function AddChapter() {
+function EditChapter() {
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const toggleSidebar = () => setSidebarOpen(prev => !prev);
     const navigate = useNavigate();
@@ -12,24 +12,22 @@ function AddChapter() {
     const [title, setTitle] = useState('');
     const [story, setStory] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const isEditMode = !!chapterId;
 
-    // Ambil data jika mode edit
+    // Fetch chapter detail saat mount
     useEffect(() => {
-        if (isEditMode) {
-            const fetchChapter = async () => {
-                try {
-                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chapters/${chapterId}`);
-                    const data = await res.json();
-                    setTitle(data.title || '');
-                    setStory(data.story || '');
-                } catch (err) {
-                    alert('Failed to load chapter data.');
-                }
-            };
-            fetchChapter();
-        }
-    }, [chapterId, isEditMode]);
+        const fetchChapter = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chapters/${chapterId}`);
+                if (!res.ok) throw new Error();
+                const data = await res.json();
+                setTitle(data.title || '');
+                setStory(data.story || '');
+            } catch (err) {
+                alert('Failed to load chapter data.');
+            }
+        };
+        fetchChapter();
+    }, [chapterId]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -41,24 +39,22 @@ function AddChapter() {
 
         setIsLoading(true);
         try {
-            const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/chapters${isEditMode ? `/${chapterId}` : ''}`;
-            const method = isEditMode ? "PUT" : "POST";
-
+            const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/chapters/${chapterId}`;
             const response = await fetch(endpoint, {
-                method,
+                method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ title, story }),
             });
 
             if (response.ok) {
-                alert(`Chapter ${isEditMode ? 'updated' : 'saved'} successfully!`);
+                alert('Chapter updated successfully!');
                 navigate(-1);
             } else {
                 const data = await response.json();
-                alert(`Error: ${data.error || 'Failed to save chapter'}`);
+                alert(`Error: ${data.error || 'Failed to update chapter'}`);
             }
         } catch (error) {
-            console.error("Error saving chapter:", error);
+            console.error("Error updating chapter:", error);
             alert("Something went wrong. Please try again.");
         }
         setIsLoading(false);
@@ -74,20 +70,20 @@ function AddChapter() {
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                         <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                    <a href="#" className="text-teal-400 hover:underline">Add Stories</a>
+                    <a href="#" className="text-teal-400 hover:underline">Chapters</a>
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                         <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                    <span className="text-teal-600">{isEditMode ? 'Edit Chapter' : 'Add Chapter'}</span>
+                    <span className="text-teal-600">Edit Chapter</span>
                 </div>
 
-                <h1 className="title">{isEditMode ? 'Edit Chapter' : 'Add Chapter'}</h1>
+                <h1 className="title">Edit Chapter</h1>
 
                 <button
                     type="button"
                     className="back-button"
                     onClick={() => navigate(-1)}
-                    aria-label="Back to Stories"
+                    aria-label="Back to Chapters"
                 >
                     <span className="flex items-center gap-2">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -128,16 +124,13 @@ function AddChapter() {
                         <button
                             type="button"
                             className="cancel-btn"
-                            onClick={() => {
-                                setTitle('');
-                                setStory('');
-                            }}
+                            onClick={() => navigate(-1)}
                             disabled={isLoading}
                         >
                             Cancel
                         </button>
                         <button type="submit" className="save-btn" disabled={isLoading}>
-                            {isLoading ? (isEditMode ? 'Updating...' : 'Saving...') : (isEditMode ? 'Update' : 'Save')}
+                            {isLoading ? 'Updating...' : 'Update'}
                         </button>
                     </div>
                 </form>
@@ -146,4 +139,4 @@ function AddChapter() {
     );
 }
 
-export default AddChapter;
+export default EditChapter;

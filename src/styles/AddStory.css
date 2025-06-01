@@ -220,6 +220,16 @@ button.save-btn {
   border: none;
 }
 
+button.submit-btn {
+  background-color: #F97316;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.5rem 1.5rem;
+  border: none;
+}
+
 button.save-btn:hover {
   background-color: #EA580C;
 }

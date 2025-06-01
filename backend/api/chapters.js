@@ -26,8 +26,9 @@ router.post('/', (req, res) => {
   if (!title || !story) {
     return res.status(400).json({ error: 'Title and story required' });
   }
-  const newChapter = { id: chapters.length + 1, title, story };
+  const newChapter = { id: nextId++, title, story };
   chapters.push(newChapter);
+  console.log('Added new chapter:', newChapter);  // Debug log
   res.status(201).json(newChapter);
 });
 
@@ -45,6 +46,7 @@ router.put('/:id', (req, res) => {
   }
 
   chapters[chapterIndex] = { id, title, story };
+  console.log('Updated chapter:', chapters[chapterIndex]);  // Debug log
   res.json(chapters[chapterIndex]);
 });
 
@@ -56,6 +58,7 @@ router.delete('/:id', (req, res) => {
     return res.status(404).json({ error: 'Chapter not found' });
   }
   chapters.splice(chapterIndex, 1);
+  console.log('Deleted chapter with id:', id);  // Debug log
   res.json({ message: 'Chapter deleted successfully' });
 });
 

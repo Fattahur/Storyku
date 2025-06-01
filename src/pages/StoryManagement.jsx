@@ -18,7 +18,7 @@ function StoryManagement() {
   };
 
   useEffect(() => {
-    fetch('https://storykuu-production.up.railway.app/api/stories')
+    fetch('${process.env.NEXT_PUBLIC_API_URL}/api/stories')
       .then(res => res.json())
       .then(data => {
         setStories(data);
@@ -45,7 +45,7 @@ function StoryManagement() {
     if (!window.confirm("Are you sure you want to delete this story?")) return;
 
     try {
-      const res = await fetch(`https://storykuu-production.up.railway.app/api/stories/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
@@ -139,7 +139,7 @@ function StoryManagement() {
                       <td>
                         <button
                           className="edit-btn"
-                          onClick={() => navigate(`/add-story/${story.id}`)}
+                          onClick={() => navigate(`/stories/edit/${story.id}`)}
                           aria-label={`Edit story ${story.title}`}
                         >
                           Edit
