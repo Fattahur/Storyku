@@ -17,7 +17,7 @@ function EditChapter() {
     useEffect(() => {
         const fetchChapter = async () => {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chapters/${chapterId}`);
+                const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/chapters/${chapterId}`);
                 if (!res.ok) throw new Error();
                 const data = await res.json();
                 setTitle(data.title || '');
@@ -39,7 +39,7 @@ function EditChapter() {
 
         setIsLoading(true);
         try {
-            const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/chapters/${chapterId}`;
+            const endpoint = `${import.meta.env.VITE_API_BASE_URL}/api/chapters/${chapterId}`;
             const response = await fetch(endpoint, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },

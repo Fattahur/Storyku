@@ -19,7 +19,7 @@ function AddChapter() {
         if (isEditMode) {
             const fetchChapter = async () => {
                 try {
-                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chapters/${chapterId}`);
+                    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/chapters/${chapterId}`);
                     const data = await res.json();
                     setTitle(data.title || '');
                     setStory(data.story || '');
@@ -41,7 +41,7 @@ function AddChapter() {
 
         setIsLoading(true);
         try {
-            const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/chapters${isEditMode ? `/${chapterId}` : ''}`;
+            const endpoint = `${import.meta.env.VITE_API_BASE_URL}/api/chapters${isEditMode ? `/${chapterId}` : ''}`;
             const method = isEditMode ? "PUT" : "POST";
 
             const response = await fetch(endpoint, {

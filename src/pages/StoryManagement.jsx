@@ -18,7 +18,7 @@ function StoryManagement() {
   };
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/stories`)
       .then(res => res.json())
       .then(data => {
         setStories(data);
@@ -45,7 +45,7 @@ function StoryManagement() {
     if (!window.confirm("Are you sure you want to delete this story?")) return;
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/stories/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
@@ -139,7 +139,7 @@ function StoryManagement() {
                       <td>
                         <button
                           className="edit-btn"
-                          onClick={() => navigate(`${process.env.NEXT_PUBLIC_API_URL}/stories/edit/${story.id}`)}
+                          onClick={() => navigate(`/stories/edit/${story.id}`)}
                           aria-label={`Edit story ${story.title}`}
                         >
                           Edit

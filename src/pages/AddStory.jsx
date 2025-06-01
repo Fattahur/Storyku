@@ -30,7 +30,7 @@ function AddStory() {
         if (storyId) {
             const fetchStory = async () => {
                 try {
-                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories/${storyId}`);
+                    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/stories/${storyId}`);
                     if (!res.ok) throw new Error("Failed to fetch story data");
                     const data = await res.json();
                     setTitle(data.title || '');
@@ -62,7 +62,7 @@ function AddStory() {
         if (!confirmDelete) return;
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chapters/${chapterId}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/chapters/${chapterId}`, {
                 method: 'DELETE',
             });
 
@@ -82,7 +82,7 @@ function AddStory() {
     useEffect(() => {
         const fetchChapters = async () => {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chapters`);
+                const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/chapters`);
                 if (!res.ok) throw new Error('Failed to fetch chapters');
                 const data = await res.json();
                 setChapters(data);
@@ -101,7 +101,7 @@ function AddStory() {
         const fetchStory = async () => {
             setFetchingStory(true);
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories/${id}`);
+                const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/stories/${id}`);
                 if (!res.ok) throw new Error('Story not found');
                 const data = await res.json();
 
@@ -181,7 +181,7 @@ function AddStory() {
 
             if (id) {
                 // Edit mode: PUT request
-                response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories/${id}`, {
+                response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/stories/${id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -191,7 +191,7 @@ function AddStory() {
             } else {
                 // Add mode: POST request
                 storyData.createdAt = new Date().toISOString();
-                response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories`, {
+                response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/stories`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

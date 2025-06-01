@@ -29,7 +29,7 @@ function EditStory() {
         const fetchStory = async () => {
             setFetchingStory(true);
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories/${storyId}`);
+                const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/stories/${storyId}`);
                 if (!res.ok) throw new Error('Story not found');
                 const data = await res.json();
                 setTitle(data.title || '');
@@ -52,7 +52,7 @@ function EditStory() {
     useEffect(() => {
         const fetchChapters = async () => {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chapters`);
+                const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/chapters`);
                 if (!res.ok) throw new Error('Failed to fetch chapters');
                 const data = await res.json();
                 setChapters(data);
@@ -76,7 +76,7 @@ function EditStory() {
         if (!confirmDelete) return;
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chapters/${chapterId}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/chapters/${chapterId}`, {
                 method: 'DELETE',
             });
 
@@ -145,7 +145,7 @@ function EditStory() {
         };
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories/${storyId}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/stories/${storyId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
