@@ -1,10 +1,9 @@
 # TESTCASEMAGANG-APP
-
+**Storyku**
 ## <a name="introduction"></a> Introduction
-This project is a **Story Management System** built with **ReactJS** for the frontend and **ExpressJS** for the backend. It enables users to perform CRUD operations for managing stories and chapters. Users can list, add, edit, delete, and view story details in an intuitive UI.
+**Storyku** adalah aplikasi web berbasis **React** yang memungkinkan pengguna untuk berbagi cerita, melihat daftar cerita, dan mengelola cerita mereka. Proyek ini dibangun menggunakan **Vite sebagai** bundler dan menggunakan berbagai pustaka modern untuk pengembangan frontend.
 
 ---
-
 ## Table of Contents
 
 - [Introduction](#introduction)
@@ -13,97 +12,105 @@ This project is a **Story Management System** built with **ReactJS** for the fro
 - [Project Structure](#project-structures)
 - [Setup & Installation](#setup-installation)
 - [Website URL](#website-url)
-
 ---
+
 
 ## <a name="features"></a> Features
-✅ **Story Management**  
-- View all stories in a paginated table  
-- Search stories by writer/title  
-- Filter stories by category and status  
-- Add new stories  
-- Edit existing stories  
-- View detailed story info  
-- Delete stories
+✅ **Manajemen Cerita**
 
-✅ **Chapter Management**  
-- Add new chapters  
-- Edit existing chapters  
-- Delete chapters
+- Menampilkan semua cerita dalam tabel berhalaman
 
-✅ **Testing**  
-- Unit testing with **Jest** and **React Testing Library**
+- Mencari cerita berdasarkan penulis/judul
 
----
+- Menyaring cerita berdasarkan kategori dan status
+
+- Menambahkan cerita baru
+
+- Mengedit cerita yang sudah ada
+
+- Melihat detail informasi cerita
+
+- Menghapus cerita
+
+✅ **Manajemen Bab**
+
+- Menambahkan bab baru
+
+- Mengedit bab yang sudah ada
+
+- Menghapus bab
+
+✅ **Pengujian**
+
+- Pengujian unit dengan Jest dan React Testing Library
+
+
 
 ## <a name="libraries"></a> Libraries
 ### Frontend (React)
-- **ReactJS**: Frontend framework
-- **Vite**: Build tool
-- **Tailwind CSS**: Styling and UI components
-- **Axios**: HTTP client
-- **React Icons**: Icon library
-- **Jest** & **React Testing Library**: Testing framework
+- **ReactJS**: Framework frontend
+
+- **Vite**: Alat build (build tool)
+
+- **Tailwind CSS**: Styling dan komponen antarmuka
+
+- **Axios**: Klien HTTP
+
+- **React Icons**: Pustaka ikon
+
+- **Jest** & **React Testing Library**: Framework pengujian
 
 ### Backend (Express)
-- **ExpressJS**: Backend framework
-- **CORS**: Middleware for handling CORS
-- **Body Parser**: Middleware for parsing request bodies
-- **Nodemon**: Development tool for live-reload
+- **ExpressJS**: Framework backend
 
----
+- **CORS**: Middleware untuk menangani CORS
 
 ## <a name="project-structures"></a> Project Structure
-.
-├── client/                  # Frontend (ReactJS)
-│   ├── public/              # Static assets (favicon, images, etc.)
-│   ├── src/                 # Main source code
-│   │   ├── assets/          # Additional assets (images, fonts, etc.)
-│   │   ├── components/      # Reusable components
-│   │   │   └── Admin/       # Components for Admin panel
-│   │   │       ├── __test__/        # Test files for components
-│   │   │       └── Sidebar.jsx      # Sidebar component
-│   │   ├── pages/           # Application pages
-│   │   │   └── Admin/       # Pages for Admin
-│   │   │       ├── AddChapter.jsx
-│   │   │       ├── AddStory.jsx
-│   │   │       ├── AdminLayout.jsx
-│   │   │       ├── Dashboard.jsx
-│   │   │       ├── DetailStory.jsx
-│   │   │       ├── EditChapter.jsx
-│   │   │       ├── EditStory.jsx
-│   │   │       └── StoryManagement.jsx
-│   │   ├── services/        # API service handlers
-│   │   │   ├── chapterService.js
-│   │   │   └── storyService.js
-│   │   ├── App.jsx          # Main App component
-│   │   ├── index.css        # Global styles
-│   │   ├── index.html       # HTML template
-│   │   ├── main.jsx         # React entry point
-│   │   ├── setupTests.js    # Jest setup file
-│   ├── .gitignore
-│   ├── babel.config.js
-│   ├── eslint.config.js
-│   ├── jest.config.js
-│   ├── package.json
-│   ├── package-lock.json
-│   ├── postcss.config.js
-│   ├── tailwind.config.js
-│   ├── vite.config.js
-│   └── vercel.json
-│
-└── server/                  # Backend (ExpressJS)
-    ├── data/                # Mock data
-    │   ├── chapters.js
-    │   └── stories.js
-    ├── public/              # Static assets (images)
-    │   └── img/             # Uploaded images
-    ├── routes/              # Express routes
-    │   ├── chapter.js
-    │   └── story.js
-    ├── server.js            # Express server entry point
+└── Storyku/                       # Root project directory
+    ├── .env                      # Environment variables
+    ├── .gitignore
+    ├── README.md
+    ├── eslint.config.js
+    ├── index.html
     ├── package.json
-    └── package-lock.json
+    ├── package-lock.json
+    ├── vite.config.js
+    ├── public/                   # Static assets
+    │   └── vite.svg
+    ├── src/                      # Frontend source code
+    │   ├── App.css
+    │   ├── App.jsx
+    │   ├── index.css
+    │   ├── main.jsx              # Entry point
+    │   ├── components/           # Reusable components
+    │   │   ├── Filter.jsx
+    │   │   ├── Sidebar.jsx
+    │   │   └── TipTapEditor.jsx
+    │   ├── pages/                # Application pages
+    │   │   ├── AddChapter.jsx
+    │   │   ├── AddStory.jsx
+    │   │   ├── EditChapter.jsx
+    │   │   ├── EditStory.jsx
+    │   │   └── StoryManagement.jsx
+    │   └── styles/               # CSS modules
+    │       ├── AddChapter.css
+    │       ├── AddStory.css
+    │       ├── Filter.css
+    │       ├── Sidebar.css
+    │       ├── Table.css
+    │       └── TipTapEditor.css
+    └── backend/                  # Backend (ExpressJS)
+        ├── .env
+        ├── package.json
+        ├── package-lock.json
+        ├── server.js             # Entry point
+        ├── api/                  # Logic for data
+        │   ├── chapters.js
+        │   └── stories.js
+        └── routes/               # Express routes
+            └── stories.js
+
 
 ## <a name="#website-url"></a> Website URL
-Deployed Link : https://testcasemagang-app.vercel.app/ 
+Aplikasi ini dapat diakses melalui URL berikut: https://storyku-9ou3yd88y-fattahurs-projects.vercel.app/
+
